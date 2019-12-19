@@ -1,0 +1,81 @@
+<!-- Создайте страницу которая запрашивает имя пользователя, если пользователь вводит "Admin" либо "admin" он попадает на страницу, которая оповещает его о том что " Пользоваетль Admin(не статическая строка, а данные что ввел пользователь) вошел в систему" а рядом разместите кнопку "Выход" которая вернет пользователя к модальному окну ввода логина. Реализуйте код как для куки так и для localstorage. -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Домашнее задание 8-1 по JsA Макеев Владимир</title>
+    <body>
+    <style type="text/css">
+        body{
+            font-size: 30px;
+        }
+        button{
+          background-color:  #F08080;
+          border-style: 4px double;
+          border-collapse: collapse;
+          font-size: 18px;
+        }
+    </style>
+    <script>
+        var cookLog = "login";
+        var adm = "Admin";
+        adm === "admin";
+        if ( getCookie(cookLog) === adm) {
+            upshot();
+        } else {
+            check();
+        }
+
+        function check () {
+            var react = prompt("Введите логин");
+            var decline = "";
+            if (react == "admin" || react == "Admin") {
+                setCookie(react, decline);
+                upshot();
+            } else {
+              check();
+            }
+        };
+
+        function setCookie (login, expire) {
+            var cookieLog = "login=" + login + " ";
+            var cookFinExp = "finish=" + expire + " ";
+            document.cookie = cookieLog + cookFinExp;
+        };
+
+        function upshot () {
+            var User = getCookie(cookLog);
+            document.write("Пользоватeль " + adm + " вошел в систему <br/><br/> <button id='logout'>Выйти из системы</button>");
+            
+        };
+
+        function getCookie(cookname) {
+            var name = cookname ;
+            var cookieAll = document.cookie.split('');
+            for (var i=0; i < cookieAll.length; i++) {
+                var cookValue = cookieAll[i];
+                while (cookValue.charAt(0)==' ') {
+                    cookValue = cookieValue.substring(1);
+                };
+                if (cookValue.indexOf(name) != -1) {
+                    return cookValue.substring(name.length,cookValue.length);
+                }
+            };
+            return "";
+        };
+
+        function cookDel (cookName) {
+            var cookDate = new Date ( ); 
+            cookDate.setTime (cookDate.getTime() - 1);
+            document.cookie = cookName += "=; finish=" + cookDate;
+        };
+
+       var btnExit = document.getElementById("logout");
+       btnExit.addEventListener("click", function () {
+            cookDel(cookLog);
+            location.reload();
+        });
+    </script>
+</head>
+</body>
+</html>
